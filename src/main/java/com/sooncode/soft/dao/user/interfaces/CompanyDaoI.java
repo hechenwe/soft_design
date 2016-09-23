@@ -1,4 +1,4 @@
-package com.sooncode.soft.dao.interfaces;
+package com.sooncode.soft.dao.user.interfaces;
 
 import org.springframework.stereotype.Repository;
 
