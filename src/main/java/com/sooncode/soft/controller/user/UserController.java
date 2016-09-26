@@ -6,9 +6,13 @@ import javax.servlet.http.HttpServletResponse;
  
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sooncode.jdbc.util.Md5;
 import com.sooncode.soft.module.entity.user.Company;
+import com.sooncode.soft.module.entity.user.User;
 
 
 @Controller
@@ -25,6 +29,27 @@ public class UserController extends SuperController {
 		c.setLogoUrl("http://");
 		 
 	   // Long l = jdbcService.save(c);
+		ModelAndView mv = new ModelAndView("index/index", null);
+		return mv;
+	}
+	
+	
+	@RequestMapping(value="login",method=RequestMethod.POST)
+	public ModelAndView login(HttpServletRequest request,HttpServletResponse response){
+		String userName = "";
+		String password = Md5.getMD5Code("");
+		User user = new User();
+		user.setUserName(userName);
+		user = (User) jdbcService.get(user);
+		if(user==null){ //用户名不存在 
+		   
+		}else{
+			 if(!user.getPassword().equals(password)){//秘密错误
+				 
+			 }else{
+				 //密码正确
+			 }
+		}
 		ModelAndView mv = new ModelAndView("index/index", null);
 		return mv;
 	}
