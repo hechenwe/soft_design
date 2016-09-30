@@ -3,30 +3,17 @@ Navicat MySQL Data Transfer
 
 Source Server         : localhost
 Source Server Version : 50621
-Source Host           : localhost:3306
-Source Database       : soft_design
+Source Host           : 127.0.0.1:3306
+Source Database       : soft_design_product
 
 Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2016-08-10 10:37:27
+Date: 2016-09-30 13:31:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for company
--- ----------------------------
-DROP TABLE IF EXISTS `company`;
-CREATE TABLE `company` (
-  `COMPANY_ID` varchar(64) NOT NULL COMMENT '公司编号',
-  `COMPANY_ALL_NAME` varchar(128) DEFAULT NULL COMMENT '公司全称',
-  `COMPANY_SIMPLE_NAME` varchar(64) DEFAULT NULL COMMENT '公司简称',
-  `LOGO_URL` varchar(1024) DEFAULT NULL COMMENT '公司商标资源路径',
-  `DATA_STATE` varchar(8) DEFAULT NULL COMMENT '数据状态',
-  PRIMARY KEY (`COMPANY_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公司';
 
 -- ----------------------------
 -- Table structure for concept
@@ -41,8 +28,12 @@ CREATE TABLE `concept` (
   `DATA_STATE` varchar(8) DEFAULT NULL COMMENT '数据状态',
   PRIMARY KEY (`CONCEPT_ID`),
   KEY `FK_Reference_7` (`PRODUCT_ID`),
-  CONSTRAINT `FK_Reference_7` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `product` (`PRODUCT_ID`)
+  CONSTRAINT `concept_ibfk_1` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `product` (`PRODUCT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='概念';
+
+-- ----------------------------
+-- Records of concept
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for concept_style
@@ -57,6 +48,10 @@ CREATE TABLE `concept_style` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='概念模型样式';
 
 -- ----------------------------
+-- Records of concept_style
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for module_function
 -- ----------------------------
 DROP TABLE IF EXISTS `module_function`;
@@ -69,8 +64,12 @@ CREATE TABLE `module_function` (
   `DATA_STATE` varchar(8) DEFAULT NULL COMMENT '数据状态',
   PRIMARY KEY (`FUNCTION_ID`),
   KEY `FK_Reference_6` (`PRODUCT_MODULE_ID`),
-  CONSTRAINT `FK_Reference_6` FOREIGN KEY (`PRODUCT_MODULE_ID`) REFERENCES `product_module` (`PRODUCT_MODULE_ID`)
+  CONSTRAINT `module_function_ibfk_1` FOREIGN KEY (`PRODUCT_MODULE_ID`) REFERENCES `product_module` (`PRODUCT_MODULE_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模块功能';
+
+-- ----------------------------
+-- Records of module_function
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for product
@@ -87,6 +86,10 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品';
 
 -- ----------------------------
+-- Records of product
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for product_module
 -- ----------------------------
 DROP TABLE IF EXISTS `product_module`;
@@ -99,20 +102,12 @@ CREATE TABLE `product_module` (
   `PRODUCT_ID` varchar(64) DEFAULT NULL COMMENT '产品编号',
   PRIMARY KEY (`PRODUCT_MODULE_ID`),
   KEY `FK_Reference_5` (`PRODUCT_ID`),
-  CONSTRAINT `FK_Reference_5` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `product` (`PRODUCT_ID`)
+  CONSTRAINT `product_module_ibfk_1` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `product` (`PRODUCT_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='产品模块';
 
 -- ----------------------------
--- Table structure for role
+-- Records of product_module
 -- ----------------------------
-DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role` (
-  `ROLE_ID` varchar(64) NOT NULL COMMENT '角色编号',
-  `ROLE_NAME` varchar(32) DEFAULT NULL COMMENT '角色名称',
-  `ROLE_CODE` varchar(32) DEFAULT NULL COMMENT '角色代码',
-  `DATA_STATE` varchar(8) DEFAULT NULL COMMENT '数据状态',
-  PRIMARY KEY (`ROLE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色';
 
 -- ----------------------------
 -- Table structure for system_element
@@ -127,35 +122,5 @@ CREATE TABLE `system_element` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统组件';
 
 -- ----------------------------
--- Table structure for user
+-- Records of system_element
 -- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
-  `USER_ID` varchar(64) NOT NULL COMMENT '用户编号',
-  `USER_NAME` varchar(128) DEFAULT NULL COMMENT '用户名(邮箱 或 手机号码)',
-  `USER_NICKNAME` varchar(32) DEFAULT NULL COMMENT '用户昵称(建议用真实姓名)',
-  `PASSWORD` varchar(32) DEFAULT NULL COMMENT '登录密码',
-  `ROLE_ID` varchar(64) DEFAULT NULL COMMENT '角色编号',
-  `COMPANY_ID` varchar(64) DEFAULT NULL COMMENT '公司编号',
-  `DATA_STATE` varchar(8) DEFAULT NULL COMMENT '数据状态',
-  PRIMARY KEY (`USER_ID`),
-  KEY `FK_USER_COMPANY_FK` (`COMPANY_ID`),
-  KEY `FK_USER_ROLE_FK` (`ROLE_ID`),
-  CONSTRAINT `FK_USER_COMPANY_FK` FOREIGN KEY (`COMPANY_ID`) REFERENCES `company` (`COMPANY_ID`),
-  CONSTRAINT `FK_USER_ROLE_FK` FOREIGN KEY (`ROLE_ID`) REFERENCES `role` (`ROLE_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户';
-
--- ----------------------------
--- Table structure for user_product
--- ----------------------------
-DROP TABLE IF EXISTS `user_product`;
-CREATE TABLE `user_product` (
-  `USER_PRODUCT_ID` varchar(64) NOT NULL COMMENT '用户产品编号',
-  `USER_ID` varchar(64) DEFAULT NULL COMMENT '用户编号',
-  `PRODUCT_ID` varchar(64) DEFAULT NULL COMMENT '产品编号',
-  PRIMARY KEY (`USER_PRODUCT_ID`),
-  KEY `FK_Reference_3` (`USER_ID`),
-  KEY `FK_Reference_4` (`PRODUCT_ID`),
-  CONSTRAINT `FK_Reference_3` FOREIGN KEY (`USER_ID`) REFERENCES `user` (`USER_ID`),
-  CONSTRAINT `FK_Reference_4` FOREIGN KEY (`PRODUCT_ID`) REFERENCES `product` (`PRODUCT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户产品';
