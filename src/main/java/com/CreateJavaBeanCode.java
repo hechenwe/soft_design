@@ -1,8 +1,8 @@
-package com.eedu.keepMark.teaching.model;
+package com;
 
 import com.sooncode.jdbc.util.create_entity.TableBuilder;
 /**
- * 創建實體類代碼 
+ * 创建实体类代码 
  * @author pc
  *
  */
